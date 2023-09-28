@@ -386,6 +386,7 @@ p_teleport <- ggplot(data, aes(x=Block_num, y=Teleportations, color=Participant)
                 color="#242526") +
   labs(color= "Participant", y="Teleportations (count)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
+  ylim(0,650)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
