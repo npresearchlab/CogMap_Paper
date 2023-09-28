@@ -56,8 +56,6 @@ data.summary <- data %>%
   )
 data.summary
 ```
-
-
 ```{r}
 #Data.summary for Total_Time
 data.summary <- data %>%
