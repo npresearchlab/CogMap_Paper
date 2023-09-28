@@ -1,9 +1,16 @@
 ---
-title: "make_figures"
+title: "Outcome Measures Per Block"
 output: html_document
 date: "2023-05-01"
 ---
-```{r}
+
+
+```{r global-options, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+
+```{r loading libraries, include=FALSE}
 # This code chunk loads various libraries necessary to complete the data analysis and produce graphics
 library(tidyverse)
 library(stringr)
@@ -20,7 +27,7 @@ library("viridis")
 library("paletteer")
 ```
 
-```{r}
+```{r reading data, include=FALSE}
 #This data chunk loads and tidies up the data
 
 #This loads the data file as the variable "data"
@@ -45,19 +52,7 @@ sapply(data, class)
 data
 ```
 
-
-```{r}
-data.summary <- data %>%
-  group_by(Block_num) %>%
-  summarise(
-    se = std.error(Total_Time),
-    Total_Time = mean(Total_Time)
-  )
-data.summary
-```
-
-
-```{r}
+```{r ct}
 #Data.summary for Total_Time
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -65,7 +60,6 @@ data.summary <- data %>%
     se = std.error(Total_Time),
     Total_Time = mean(Total_Time)
   )
-data.summary
 #Total_time by Block_num
 p_ct <- ggplot(data, aes(x=Block_num, y=Total_Time, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Total_Time, group = Participant, color = Participant), alpha = .5)+
@@ -91,7 +85,7 @@ p_ct <- ggplot(data, aes(x=Block_num, y=Total_Time, color=Participant))+
 p_ct
 ```
 
-```{r}
+```{r orict}
 #Data.summary for Orientation_Time
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -99,9 +93,8 @@ data.summary <- data %>%
     se = std.error(Orientation_Time),
     Orientation_Time = mean(Orientation_Time)
   )
-data.summary
 #Orientation Time by Block_num
-p_ori_ct <- ggplot(data, aes(x=Block_num, y=Orientation_Time, color=Participant))+
+p_orict <- ggplot(data, aes(x=Block_num, y=Orientation_Time, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Orientation_Time, group = Participant, color = Participant), alpha = .5)+
   scale_color_viridis(option = "plasma", discrete = TRUE)+
   geom_point(data, mapping = aes(x= Block_num, y = Orientation_Time, group = Participant),color = 'white', size = 3)+
@@ -122,11 +115,11 @@ p_ori_ct <- ggplot(data, aes(x=Block_num, y=Orientation_Time, color=Participant)
   theme(axis.text.x = element_text(size=16))+
   theme(axis.text.y = element_text(size=16))+
   theme(axis.title.y = element_text(size=16))
-p_ori_ct
+p_orict
 ```
 
 
-```{r}
+```{r navct}
 #Data.summary for Navigation_Time
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -134,9 +127,8 @@ data.summary <- data %>%
     se = std.error(Navigation_Time),
     Navigation_Time = mean(Navigation_Time)
   )
-data.summary
 #Navigation Time by Block_num
-p_nav_ct <- ggplot(data, aes(x=Block_num, y=Navigation_Time, color=Participant))+
+p_navct <- ggplot(data, aes(x=Block_num, y=Navigation_Time, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Navigation_Time, group = Participant, color = Participant), alpha = .5)+
   scale_color_viridis(option = "plasma", discrete = TRUE)+
   geom_point(data, mapping = aes(x= Block_num, y = Navigation_Time, group = Participant),color = 'white', size = 3)+
@@ -157,10 +149,10 @@ p_nav_ct <- ggplot(data, aes(x=Block_num, y=Navigation_Time, color=Participant))
   theme(axis.text.x = element_text(size=16))+
   theme(axis.text.y = element_text(size=16))+
   theme(axis.title.y = element_text(size=16))
-p_nav_ct
+p_navct
 ```
 
-```{r}
+```{r dt}
 #Data.summary for Distance
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -168,7 +160,6 @@ data.summary <- data %>%
     se = std.error(Distance),
     Distance = mean(Distance)
   )
-data.summary
 #Distance by Block_num
 p_dt <- ggplot(data, aes(x=Block_num, y=Distance, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Distance, group = Participant, color = Participant), alpha = .5)+
@@ -194,7 +185,7 @@ p_dt <- ggplot(data, aes(x=Block_num, y=Distance, color=Participant))+
 p_dt
 ```
 
-```{r}
+```{r speed}
 #Data.summary for Speed
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -202,7 +193,6 @@ data.summary <- data %>%
     se = std.error(Speed),
     Speed = mean(Speed)
   )
-data.summary
 #Speed by Block_num
 p_speed <- ggplot(data, aes(x=Block_num, y=Speed, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Speed, group = Participant, color = Participant), alpha = .5)+
@@ -228,7 +218,7 @@ p_speed <- ggplot(data, aes(x=Block_num, y=Speed, color=Participant))+
 p_speed
 ```
 
-```{r}
+```{r dwell}
 #Data.summary for Mean_Dwell
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -236,7 +226,6 @@ data.summary <- data %>%
     se = std.error(Mean_Dwell),
     Mean_Dwell = mean(Mean_Dwell)
   )
-data.summary
 #Mean_Dwell by Block_num
 p_dwell <- ggplot(data, aes(x=Block_num, y=Mean_Dwell, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Mean_Dwell, group = Participant, color = Participant), alpha = .5)+
@@ -262,7 +251,7 @@ p_dwell <- ggplot(data, aes(x=Block_num, y=Mean_Dwell, color=Participant))+
 p_dwell
 ``` 
 
-```{r}
+```{r varx}
 #Data.summary for Var_X
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -270,9 +259,8 @@ data.summary <- data %>%
     se = std.error(Var_X),
     Var_X = mean(Var_X)
   )
-data.summary
 #Var_X by Block_num
-p_var_x <- ggplot(data, aes(x=Block_num, y=Var_X, color=Participant))+
+p_varx <- ggplot(data, aes(x=Block_num, y=Var_X, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Var_X, group = Participant, color = Participant), alpha = .5)+
   scale_color_viridis(option = "plasma", discrete = TRUE)+
   geom_point(data, mapping = aes(x= Block_num, y = Var_X, group = Participant),color = 'white', size = 3)+
@@ -293,10 +281,10 @@ p_var_x <- ggplot(data, aes(x=Block_num, y=Var_X, color=Participant))+
   theme(axis.text.x = element_text(size=16))+
   theme(axis.text.y = element_text(size=16))+
   theme(axis.title.y = element_text(size=16))
-p_var_x
+p_varx
 ```
 
-```{r}
+```{r vary}
 #Data.summary for Var_Y
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -304,9 +292,8 @@ data.summary <- data %>%
     se = std.error(Var_Y),
     Var_Y = mean(Var_Y)
   )
-data.summary
 #Var_Y by Block_num
-p_var_y <- ggplot(data, aes(x=Block_num, y=Var_Y, color=Participant))+
+p_vary <- ggplot(data, aes(x=Block_num, y=Var_Y, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Var_Y, group = Participant, color = Participant), alpha = .5)+
   scale_color_viridis(option = "plasma", discrete = TRUE)+
   geom_point(data, mapping = aes(x= Block_num, y = Var_Y, group = Participant),color = 'white', size = 3)+
@@ -318,7 +305,7 @@ p_var_y <- ggplot(data, aes(x=Block_num, y=Var_Y, color=Participant))+
                 color="#242526") +
   labs(color= "Participant", y="Y Euler Angle Variation (degrees/s)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
-  ylim(0,100)+
+  ylim(0,130)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
@@ -327,10 +314,10 @@ p_var_y <- ggplot(data, aes(x=Block_num, y=Var_Y, color=Participant))+
   theme(axis.text.x = element_text(size=16))+
   theme(axis.text.y = element_text(size=16))+
   theme(axis.title.y = element_text(size=16))
-p_var_y
+p_vary
 ```
 
-```{r}
+```{r varz}
 #Data.summary for Var_Z
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -338,9 +325,8 @@ data.summary <- data %>%
     se = std.error(Var_Z),
     Var_Z = mean(Var_Z)
   )
-data.summary
 #Var_Z by Block_num
-p_var_z <- ggplot(data, aes(x=Block_num, y=Var_Z, color=Participant))+
+p_varz <- ggplot(data, aes(x=Block_num, y=Var_Z, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Var_Z, group = Participant, color = Participant), alpha = .5)+
   scale_color_viridis(option = "plasma", discrete = TRUE)+
   geom_point(data, mapping = aes(x= Block_num, y = Var_Z, group = Participant),color = 'white', size = 3)+
@@ -352,7 +338,7 @@ p_var_z <- ggplot(data, aes(x=Block_num, y=Var_Z, color=Participant))+
                 color="#242526") +
   labs(color= "Participant", y="Z Euler Angle Variation (degrees/s)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
-  ylim(0,20)+
+  ylim(0,10)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
@@ -361,10 +347,10 @@ p_var_z <- ggplot(data, aes(x=Block_num, y=Var_Z, color=Participant))+
   theme(axis.text.x = element_text(size=16))+
   theme(axis.text.y = element_text(size=16))+
   theme(axis.title.y = element_text(size=16))
-p_var_z
+p_varz
 ```
 
-```{r}
+```{r teleport}
 #Data.summary for Teleportations
 data.summary <- data %>%
   group_by(Block_num) %>%
@@ -372,7 +358,6 @@ data.summary <- data %>%
     se = std.error(Teleportations),
     Teleportations = mean(Teleportations)
   )
-data.summary
 #Teleportations by Block_num
 p_teleport <- ggplot(data, aes(x=Block_num, y=Teleportations, color=Participant))+
   geom_line(data, mapping = aes(x= Block_num, y = Teleportations, group = Participant, color = Participant), alpha = .5)+
@@ -386,7 +371,7 @@ p_teleport <- ggplot(data, aes(x=Block_num, y=Teleportations, color=Participant)
                 color="#242526") +
   labs(color= "Participant", y="Teleportations (count)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
-  ylim(0,650)+
+  ylim(0,700)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
