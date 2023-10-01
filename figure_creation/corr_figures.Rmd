@@ -410,4 +410,3 @@ corr_highschool <- cor.test(highschool$Distance, highschool$NARA)
 corr_highschool
 ```
 
-
