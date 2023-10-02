@@ -102,11 +102,72 @@ b3$Target_Name <- factor(b3$Target_Name, levels = desired_order)
 change$Target_Name <- factor(change$Target_Name, levels = desired_order)
 ```
 
+# Linear Mixed Model
 
-```{r stats}
+To use a linear mixed model, the relationship between your response variable 
+and your explanatory variable is assumed to be linear. However, this is not the
+case in our data. As you can see below, if you conduct a basic linear regression, 
+and you plot the residuals or plot a Q-Q plot, the data doesn't necessarily 
+look like it should. Therefore, I'm not sure we can use a linear mixed model here.
+
+
+However, let's run it anyways and see what happens.
+
+```{r stats lm}
+basic.lm <- lm(Distance ~ Block_num, data = nav_data)
+summary(basic.lm)
+```
+
+Now that we've done that, we can plot a preliminary plot: Distance by Block. 
+This should be a linear relationship. This is helpful to see if we can actually
+use a linear mixed model (or any linear regression model anyways). 
+
+Even though we see a linear-ish trend below, I'm unsure if the explanatory variable
+has to be a continuous variable (and not categorical, like Block is). This is
+my main question. 
+
+```{r p_prelim}
+prelim_plot <- ggplot(nav_data, aes(x = Block_num, y = Distance)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+prelim_plot
+```
+
+Below, we plot the residuals. The line should ideally be flat, which it is.
+This assumption passes, under the condition that the explanatory variable can be
+categorical (which I'm actually not sure it can be). 
+
+```{r p_residuals}
+plot(basic.lm, which = 1)
+```
+
+Below, we plot a Q-Q plot. The dots should lie along the line. Here, you see that this
+is not the case. This assumption fails. 
+
+```{r p_qq}
+plot(basic.lm, which = 2) 
+```
+
+Since there's not necessarily a directly linear relationship between our variables, 
+and our explanatory variable is categorical, I'm not sure we can use a linear
+mixed model. 
+
+# Two-Way Nested ANOVA
+
+Instead of a linear mixed model, we can utilize a Two-Way Nested ANOVA. A Two-Way 
+Nested ANOVA (also known as Nested Analysis of Variance) is designed for 
+situations where you have two categorical independent variables, one of which 
+is nested within the other (like Block and Trial). 
+
+Below is the two-way nested ANOVA.
+
+```{r stats anova}
 nest <- aov(nav_data$Distance ~ nav_data$Block_num / factor(nav_data$Target_Name))
 summary(nest)
 ```
+
+
+Here's a prelim plot that visually shows the comparisons we're making above.
 
 ```{r}
 ggplot(nav_data, aes(x=factor(Target_Name), y=Distance, fill=Block_num))+
