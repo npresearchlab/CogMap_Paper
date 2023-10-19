@@ -29,6 +29,8 @@ library(rstatix)
 library(lme4)
 #install.packages("lmerTest")
 library(lmerTest)
+#install.packages('emmeans')
+library('emmeans')
 ```
 
 ```{r reading data, include=FALSE}
@@ -155,9 +157,9 @@ p_ct <- ggplot(data, aes(x=Block_num, y=Total_Time, color=Participant))+
                 geom="crossbar", 
                 width=0.2,
                 color="#242526") +
-  labs(color= "Participant", y="Total Time (s)", x="")+
+  labs(color= "Participant", y="Mean Time to Target (s)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
-  ylim(0,1000)+
+  ylim(0,150)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
@@ -173,12 +175,17 @@ p_ct
 
 ```{r}
 # Running linear mi
-m <- lmer(Total_Time ~ Block_num*Target_Name + (1|Participant), data=nav_data)
-anova(m)
+m_ct <- lmer(Total_Time ~ Block_num*Target_Name + (1|Participant), data=nav_data)
+summary(m_ct)
 ```
-*Example for how to write up the results:*
-For the effect of block: F(1,506) = 55.0636, p < 0.001
 
+```{r}
+# Jasmine's code
+emm_m_ct <- emmeans(m_ct,~Block_num|Target_Name)
+# can look at just Block_num, or just Target_Name; or the interaction with |
+# can run the reverse: Target_Name | Block_num for contrasts 
+pairs(emm_m_ct)
+```
 # Orientation Time
 
 ## Plot
@@ -202,9 +209,9 @@ p_orict <- ggplot(data, aes(x=Block_num, y=Orientation_Time, color=Participant))
                 geom="crossbar", 
                 width=0.2, 
                 color="#242526") +
-  labs(color= "Participant", y="Orientation Time (s)", x="")+
+  labs(color= "Participant", y="Mean Orientation Time (s)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
-  ylim(0,100)+
+  ylim(0,15)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
@@ -247,9 +254,9 @@ p_navct <- ggplot(data, aes(x=Block_num, y=Navigation_Time, color=Participant))+
                 geom="crossbar", 
                 width=0.2, 
                 color="#242526") +
-  labs(color= "Participant", y="Navigation Time (s)", x="")+
+  labs(color= "Participant", y="Mean Navigation Time (s)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
-  ylim(0,1000)+
+  ylim(0,150)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
@@ -292,9 +299,9 @@ p_dt <- ggplot(data, aes(x=Block_num, y=Distance, color=Participant))+
                 geom="crossbar", 
                 width=0.2, 
                 color="#242526") +
-  labs(color= "Participant", y="Distance Traveled (VR Units)", x="")+
+  labs(color= "Participant", y="Mean Distance Traveled (VR Units)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
-  ylim(0,5000)+
+  ylim(0,600)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
@@ -337,7 +344,7 @@ p_speed <- ggplot(data, aes(x=Block_num, y=Speed, color=Participant))+
                 geom="crossbar", 
                 width=0.2, 
                 color="#242526") +
-  labs(color= "Participant", y="Speed (VR Unit/s)", x="")+
+  labs(color= "Participant", y="Mean Speed (VR Unit/s)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
   ylim(0,23)+
   theme_classic()+
@@ -429,9 +436,9 @@ p_teleport <- ggplot(data, aes(x=Block_num, y=Teleportations, color=Participant)
                 geom="crossbar", 
                 width=0.2, 
                 color="#242526") +
-  labs(color= "Participant", y="Teleportations (count)", x="")+
+  labs(color= "Participant", y="Mean Teleportations to Target (count)", x="")+
   scale_x_discrete(labels = c( "Block 1","Block 2","Block 3"))+
-  ylim(0,700)+
+  ylim(0,100)+
   theme_classic()+
   theme(axis.line = element_line(linewidth = .5, colour = "#242526"))+
   theme(axis.ticks = element_line(linewidth = .2, colour = "#242526"))+
