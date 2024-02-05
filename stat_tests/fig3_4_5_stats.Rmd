@@ -513,7 +513,7 @@ cat("Saved combined data as", csv_file, "\n")
 dataframes3 <- ls()
 
 # Filter dataframes that end with "anova"
-dataframes_to_save3 <- dataframes3[grep("targetonly$", dataframes2)]
+dataframes_to_save3 <- dataframes3[grep("targetonly$", dataframes3)]
 
 # Create an empty list to store dataframes
 combined_dataframes3 <- list()
