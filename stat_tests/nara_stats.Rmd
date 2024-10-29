@@ -1,0 +1,57 @@
+---
+title: "demographic data ANOVA"
+output: html_document
+date: "2023-11-02"
+---
+
+```{r}
+library(tidyr)
+library(tidyverse)
+library(PMCMR)
+```
+
+```{r}
+nara_by_target <- read.csv('/Users/yasminebassil/Documents/Emory/3_Research/Projects/CogMap_Paper/data/nara_scores_count.csv')
+data <- nara_by_target[, -1]
+```
+
+```{r}
+# Run the Chi-square test
+chi_square_result <- chisq.test(data)
+chi_square_result
+```
+
+```{r}
+round(chi_square_result$residuals, 3)
+```
+
+```{r}
+# Extract the raw residuals
+residuals_raw <- chi_square_result$residuals
+
+# Extract the expected frequencies
+expected <- chi_square_result$expected
+
+# Calculate the adjusted standardized residuals
+adj_std_residuals <- residuals_raw / sqrt((1 - rowSums(expected) / sum(expected)) * (1 - colSums(expected) / sum(expected)))
+
+# Print the adjusted standardized residuals
+print(adj_std_residuals)
+
+```
+
+```{r}
+friedman_result <- friedman.test(as.matrix(data))
+
+# Print the results
+print(friedman_result)
+```
+
+```{r}
+# Perform post-hoc analysis
+#posthoc <- frdAllPairsNemenyiTest(as.matrix(data))
+
+# Print post-hoc results
+#print(posthoc)
+
+```
